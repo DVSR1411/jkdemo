@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone') {
+            steps {
+                git 'https://github.com/DVSR1411/onlinebookstore-v2.git'
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                try {
+                    emailext (
+                        subject: "Build ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_ID}",
+                        body: """
+                            <html>
+                            <body>
+                            <p>Build was ${currentBuild.currentResult}!</p>
+                            <p><b>Build ID:</b> ${env.BUILD_ID}</p>
+                            <p><b>Job Name:</b> ${env.JOB_NAME}</p>
+                            <p><b>Jenkins Home:</b> ${env.JENKINS_HOME}</p>
+                            <p>Check the <a href="${env.BUILD_URL}">Console Output</a></p>
+                            </body>
+                            </html>
+                        """,
+                        to: 'sender@gmail.com',
+                        from: 'receiver@gmail.com',
+                        mimeType: 'text/html'
+                    )
+                    echo "Email sent successfully!"
+                } 
+                catch (Exception e) {
+                    echo "Failed to send email: ${e.message}"
+                }
+            }
+        }
+    }
+}
