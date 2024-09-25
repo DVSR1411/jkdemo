@@ -1,0 +1,9 @@
+Stop Jenkins service
+Create systemd overrite file: mkdir /etc/systemd/system/jenkins.service.d
+Create file in jenkins.service.d: nano jenkins-port.conf
+Enter following content:
+```
+[Service]
+Environment="JENKINS_PORT=8082" 
+```
+Save it and restart jenkins
