@@ -9,8 +9,6 @@ yum install jenkins -y
 yum install git -y
 yum install docker -y
 echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-systemctl enable docker
-systemctl start docker
+service docker start
 sudo usermod -aG docker jenkins
-systemctl enable jenkins
-systemctl start jenkins
+service jenkins start
